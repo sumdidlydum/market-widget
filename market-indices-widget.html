@@ -20,7 +20,7 @@
     .card {
       border-radius: 8px;
       overflow: hidden;
-      height: 140px;
+      height: 160px;
       border: 1px solid #e8e8e8;
       background: #ffffff;
     }
@@ -32,83 +32,63 @@
     .tradingview-widget-copyright { display: none; }
 
     /* Portfolio card */
-    .port-card {
+    .port-inner {
       display: flex;
       flex-direction: column;
-      padding: 11px 13px 10px;
+      padding: 10px 12px 8px;
       height: 100%;
-      position: relative;
     }
-    .port-label {
-      font-size: 10px;
-      color: #9ca3af;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 2px;
-    }
-    .port-name {
-      font-size: 12px;
-      font-weight: 600;
-      color: #374151;
-      margin-bottom: 6px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .port-value {
-      font-size: 22px;
-      font-weight: 600;
-      color: #111827;
-      letter-spacing: -0.5px;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-    .port-change {
-      font-size: 12px;
-      font-weight: 500;
-    }
-    .port-change.pos { color: #16a34a; }
-    .port-change.neg { color: #dc2626; }
-    .port-bar {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 3px;
-    }
-    .port-bar.pos { background: linear-gradient(to right, #dcfce7, #16a34a); }
-    .port-bar.neg { background: linear-gradient(to right, #fee2e2, #dc2626); }
-    .port-date {
-      font-size: 9px;
-      color: #d1d5db;
-      margin-top: 4px;
-    }
+    .port-label { font-size: 9px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; }
+    .port-name  { font-size: 11px; font-weight: 600; color: #374151; margin: 1px 0 5px; }
+    .port-value { font-size: 21px; font-weight: 600; color: #111827; letter-spacing: -0.4px; line-height: 1; }
+    .port-change { font-size: 11px; font-weight: 500; margin-top: 2px; }
+    .pos { color: #16a34a; }
+    .neg { color: #dc2626; }
+    .port-chart  { flex: 1; margin-top: 6px; min-height: 50px; }
+    .port-footer { font-size: 8px; color: #d1d5db; margin-top: 3px; }
   </style>
 </head>
 <body>
 
-  <!-- PORTFOLIO_DATA is updated by the daily sync. Format:
-       { value: 126926.81, change: -310.93, pct: -0.0106, date: "Jun 1, 2026" }
-       Do not edit this line manually. -->
+  <!--
+    PORTFOLIO_DATA — updated by the daily sync (Step 7).
+    Do not edit manually. Format:
+    { value, change, pct, date, history: [{d, v}, ...] }
+  -->
   <script>
-    var PORTFOLIO_DATA = {"value":126926.81,"change":-310.93,"pct":-0.0106,"date":"Jun 1, 2026"};
+    var PORTFOLIO_DATA = {
+      value:  126926.81,
+      change: -310.93,
+      pct:    -0.0106,
+      date:   "Jun 1, 2026",
+      history: [
+        {d:"Dec",  v:109321.56},
+        {d:"Jan",  v:110700.70},
+        {d:"Feb",  v:112686.84},
+        {d:"Mar",  v:110508.65},
+        {d:"Apr",  v:106419.99},
+        {d:"May",  v:120266.47},
+        {d:"Jun",  v:126926.81}
+      ]
+    };
   </script>
 
   <div class="grid">
 
-    <!-- S&P 500 -->
+    <!-- S&P 500 — 3-month view -->
     <div class="card">
       <div class="tradingview-widget-container">
         <div class="tradingview-widget-container__widget"></div>
         <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
         {
           "symbol": "CAPITALCOM:US500",
-          "width": "100%",
-          "height": "100%",
+          "width": "100%", "height": "100%",
           "locale": "en",
-          "dateRange": "1D",
+          "dateRange": "3M",
           "colorTheme": "light",
-          "trendLineColor": "rgba(41, 98, 255, 1)",
-          "underLineColor": "rgba(41, 98, 255, 0.3)",
-          "underLineBottomColor": "rgba(41, 98, 255, 0)",
+          "trendLineColor": "rgba(41,98,255,1)",
+          "underLineColor": "rgba(41,98,255,0.15)",
+          "underLineBottomColor": "rgba(41,98,255,0)",
           "isTransparent": true,
           "autosize": false
         }
@@ -116,21 +96,20 @@
       </div>
     </div>
 
-    <!-- QQQ -->
+    <!-- QQQ — 3-month view -->
     <div class="card">
       <div class="tradingview-widget-container">
         <div class="tradingview-widget-container__widget"></div>
         <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
         {
           "symbol": "NASDAQ:QQQ",
-          "width": "100%",
-          "height": "100%",
+          "width": "100%", "height": "100%",
           "locale": "en",
-          "dateRange": "1D",
+          "dateRange": "3M",
           "colorTheme": "light",
-          "trendLineColor": "rgba(41, 98, 255, 1)",
-          "underLineColor": "rgba(41, 98, 255, 0.3)",
-          "underLineBottomColor": "rgba(41, 98, 255, 0)",
+          "trendLineColor": "rgba(41,98,255,1)",
+          "underLineColor": "rgba(41,98,255,0.15)",
+          "underLineBottomColor": "rgba(41,98,255,0)",
           "isTransparent": true,
           "autosize": false
         }
@@ -138,21 +117,20 @@
       </div>
     </div>
 
-    <!-- Dow Jones -->
+    <!-- Dow Jones — 3-month view -->
     <div class="card">
       <div class="tradingview-widget-container">
         <div class="tradingview-widget-container__widget"></div>
         <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
         {
           "symbol": "CAPITALCOM:US30",
-          "width": "100%",
-          "height": "100%",
+          "width": "100%", "height": "100%",
           "locale": "en",
-          "dateRange": "1D",
+          "dateRange": "3M",
           "colorTheme": "light",
-          "trendLineColor": "rgba(41, 98, 255, 1)",
-          "underLineColor": "rgba(41, 98, 255, 0.3)",
-          "underLineBottomColor": "rgba(41, 98, 255, 0)",
+          "trendLineColor": "rgba(41,98,255,1)",
+          "underLineColor": "rgba(41,98,255,0.15)",
+          "underLineBottomColor": "rgba(41,98,255,0)",
           "isTransparent": true,
           "autosize": false
         }
@@ -160,41 +138,106 @@
       </div>
     </div>
 
-    <!-- My Portfolio (replaces VIX) -->
+    <!-- My Portfolio — 7-month sparkline -->
     <div class="card" id="port-card">
-      <div class="port-card">
+      <div class="port-inner">
         <div class="port-label">My Portfolio</div>
-        <div class="port-name" id="port-name">Total Value</div>
-        <div class="port-value" id="port-value">—</div>
-        <div class="port-change" id="port-change"></div>
-        <div class="port-date" id="port-date"></div>
+        <div class="port-name" id="p-date">—</div>
+        <div class="port-value" id="p-val">—</div>
+        <div class="port-change" id="p-chg"></div>
+        <div class="port-chart">
+          <svg id="p-svg" width="100%" height="100%" preserveAspectRatio="none"></svg>
+        </div>
+        <div class="port-footer" id="p-foot">updates with daily sync</div>
       </div>
-      <div class="port-bar" id="port-bar"></div>
     </div>
 
   </div>
 
   <script>
-    (function() {
-      var d = window.PORTFOLIO_DATA;
-      if (!d || !d.value) return;
+  (function() {
+    var d = window.PORTFOLIO_DATA;
+    if (!d || !d.value) return;
 
-      var pos = d.change >= 0;
-      var cls = pos ? 'pos' : 'neg';
-      var arrow = pos ? '▲' : '▼';
-      var absChg = Math.abs(d.change).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-      var absPct = Math.abs(d.pct * 100).toFixed(2);
+    var pos = d.change >= 0;
+    var cls = pos ? 'pos' : 'neg';
+    var arrow = pos ? '▲' : '▼';
+    var absChg = Math.abs(d.change).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    var absPct = Math.abs(d.pct * 100).toFixed(2);
 
-      document.getElementById('port-value').textContent =
-        '$' + d.value.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    document.getElementById('p-val').textContent =
+      '$' + d.value.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    document.getElementById('p-date').textContent = 'As of ' + d.date;
 
-      var chgEl = document.getElementById('port-change');
-      chgEl.textContent = arrow + ' $' + absChg + '  (' + (pos ? '+' : '-') + absPct + '%)';
-      chgEl.className = 'port-change ' + cls;
+    var chgEl = document.getElementById('p-chg');
+    chgEl.textContent = arrow + ' $' + absChg + '  (' + (pos ? '+' : '-') + absPct + '%)';
+    chgEl.className = 'port-change ' + cls;
 
-      document.getElementById('port-date').textContent = 'As of ' + d.date + ' · updated daily';
-      document.getElementById('port-bar').className = 'port-bar ' + cls;
-    })();
+    // Build SVG sparkline
+    var hist = d.history;
+    if (!hist || hist.length < 2) return;
+
+    var vals = hist.map(function(h) { return h.v; });
+    var minV = Math.min.apply(null, vals);
+    var maxV = Math.max.apply(null, vals);
+    var range = maxV - minV || 1;
+
+    var svg = document.getElementById('p-svg');
+    var W = 280, H = 52;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+
+    var pts = vals.map(function(v, i) {
+      var x = (i / (vals.length - 1)) * (W - 4) + 2;
+      var y = H - 4 - ((v - minV) / range) * (H - 12);
+      return x.toFixed(1) + ',' + y.toFixed(1);
+    });
+
+    var lineColor = pos ? '#16a34a' : '#dc2626';
+    var fillColor = pos ? 'rgba(22,163,74,0.10)' : 'rgba(220,38,38,0.10)';
+
+    // Fill area
+    var firstX = pts[0].split(',')[0];
+    var lastX  = pts[pts.length-1].split(',')[0];
+    var fillPath = 'M ' + pts.join(' L ') + ' L ' + lastX + ',' + (H-4) + ' L ' + firstX + ',' + (H-4) + ' Z';
+    var fillEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    fillEl.setAttribute('d', fillPath);
+    fillEl.setAttribute('fill', fillColor);
+    fillEl.setAttribute('stroke', 'none');
+    svg.appendChild(fillEl);
+
+    // Line
+    var lineEl = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+    lineEl.setAttribute('points', pts.join(' '));
+    lineEl.setAttribute('fill', 'none');
+    lineEl.setAttribute('stroke', lineColor);
+    lineEl.setAttribute('stroke-width', '1.5');
+    lineEl.setAttribute('stroke-linejoin', 'round');
+    svg.appendChild(lineEl);
+
+    // Month labels
+    hist.forEach(function(h, i) {
+      var x = (i / (vals.length - 1)) * (W - 4) + 2;
+      var txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      txt.setAttribute('x', x.toFixed(1));
+      txt.setAttribute('y', H);
+      txt.setAttribute('text-anchor', 'middle');
+      txt.setAttribute('font-size', '7');
+      txt.setAttribute('fill', '#d1d5db');
+      txt.setAttribute('font-family', '-apple-system,sans-serif');
+      txt.textContent = h.d;
+      svg.appendChild(txt);
+    });
+
+    // Dot on last point
+    var lastPt = pts[pts.length-1].split(',');
+    var dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    dot.setAttribute('cx', lastPt[0]);
+    dot.setAttribute('cy', lastPt[1]);
+    dot.setAttribute('r', '2.5');
+    dot.setAttribute('fill', lineColor);
+    svg.appendChild(dot);
+
+  })();
   </script>
 
 </body>
