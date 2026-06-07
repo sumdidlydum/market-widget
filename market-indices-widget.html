@@ -30,9 +30,68 @@
       height: 100%;
     }
     .tradingview-widget-copyright { display: none; }
+
+    /* Portfolio card */
+    .port-card {
+      display: flex;
+      flex-direction: column;
+      padding: 11px 13px 10px;
+      height: 100%;
+      position: relative;
+    }
+    .port-label {
+      font-size: 10px;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    .port-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .port-value {
+      font-size: 22px;
+      font-weight: 600;
+      color: #111827;
+      letter-spacing: -0.5px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .port-change {
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .port-change.pos { color: #16a34a; }
+    .port-change.neg { color: #dc2626; }
+    .port-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .port-bar.pos { background: linear-gradient(to right, #dcfce7, #16a34a); }
+    .port-bar.neg { background: linear-gradient(to right, #fee2e2, #dc2626); }
+    .port-date {
+      font-size: 9px;
+      color: #d1d5db;
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
+
+  <!-- PORTFOLIO_DATA is updated by the daily sync. Format:
+       { value: 126926.81, change: -310.93, pct: -0.0106, date: "Jun 1, 2026" }
+       Do not edit this line manually. -->
+  <script>
+    var PORTFOLIO_DATA = {"value":126926.81,"change":-310.93,"pct":-0.0106,"date":"Jun 1, 2026"};
+  </script>
+
   <div class="grid">
 
     <!-- S&P 500 -->
@@ -101,28 +160,42 @@
       </div>
     </div>
 
-    <!-- VIX -->
-    <div class="card">
-      <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-        {
-          "symbol": "CAPITALCOM:VIX",
-          "width": "100%",
-          "height": "100%",
-          "locale": "en",
-          "dateRange": "1D",
-          "colorTheme": "light",
-          "trendLineColor": "rgba(255, 82, 82, 1)",
-          "underLineColor": "rgba(255, 82, 82, 0.3)",
-          "underLineBottomColor": "rgba(255, 82, 82, 0)",
-          "isTransparent": true,
-          "autosize": false
-        }
-        </script>
+    <!-- My Portfolio (replaces VIX) -->
+    <div class="card" id="port-card">
+      <div class="port-card">
+        <div class="port-label">My Portfolio</div>
+        <div class="port-name" id="port-name">Total Value</div>
+        <div class="port-value" id="port-value">—</div>
+        <div class="port-change" id="port-change"></div>
+        <div class="port-date" id="port-date"></div>
       </div>
+      <div class="port-bar" id="port-bar"></div>
     </div>
 
   </div>
+
+  <script>
+    (function() {
+      var d = window.PORTFOLIO_DATA;
+      if (!d || !d.value) return;
+
+      var pos = d.change >= 0;
+      var cls = pos ? 'pos' : 'neg';
+      var arrow = pos ? '▲' : '▼';
+      var absChg = Math.abs(d.change).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      var absPct = Math.abs(d.pct * 100).toFixed(2);
+
+      document.getElementById('port-value').textContent =
+        '$' + d.value.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+      var chgEl = document.getElementById('port-change');
+      chgEl.textContent = arrow + ' $' + absChg + '  (' + (pos ? '+' : '-') + absPct + '%)';
+      chgEl.className = 'port-change ' + cls;
+
+      document.getElementById('port-date').textContent = 'As of ' + d.date + ' · updated daily';
+      document.getElementById('port-bar').className = 'port-bar ' + cls;
+    })();
+  </script>
+
 </body>
 </html>
